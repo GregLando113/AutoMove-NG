@@ -36,7 +36,7 @@ namespace AutoMove
 
 	void RegisterForCustomMarkerChange(RE::TESQuest* script)
 	{
-		onCustomMarkerChange.Register();
+		//onCustomMarkerChange.Register();
 	}
 	void UnregisterForCustomMarkerChange(RE::TESQuest* script)
 	{
@@ -44,7 +44,7 @@ namespace AutoMove
 
 	void RegisterForPlayerDialogue(RE::TESQuest* script)
 	{
-		onCustomMarkerChange.Register();
+		//onCustomMarkerChange.Register();
 	}
 	void UnregisterForPlayerDialogue(RE::TESQuest* script)
 	{
@@ -52,7 +52,7 @@ namespace AutoMove
 
 	RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* actor)
 	{
-
+		return actor;
 	}
 }
 
@@ -68,7 +68,7 @@ bool RegisterFuncs(RE::BSScript::Internal::VirtualMachine* a_vm)
 }
 
 
-extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
+extern "C" __declspec(dllexport) constinit auto SKSEPlugin_Version = []() {
 	SKSE::PluginVersionData v;
 
 	v.PluginVersion('AEr1');
@@ -80,7 +80,7 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	return v;
 }();
 
-extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
+extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
 
