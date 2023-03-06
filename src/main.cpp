@@ -18,6 +18,13 @@ namespace AutoMove
 	}
 
 
+	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, uintptr_t ref)
+	{
+		REL::Relocation<decltype(ForceRefToAlias)> fn(25052);
+		return fn(script, aliasID, ref);
+	}
+
+
 	void ForceDestinationMarkerIntoAliasID(RE::TESQuest* script, unsigned int aliasID)
 	{
 		auto player = RE::PlayerCharacter::GetSingleton();
@@ -25,7 +32,7 @@ namespace AutoMove
 		bool result = GetPtrByRefHandle(&player->unk924, &handleptr);
 		if (handleptr)
 		{
-
+			result = ForceRefToAlias(script, aliasID, handleptr);
 		}
 	}
 
@@ -34,25 +41,25 @@ namespace AutoMove
 		return RE::PlayerCharacter::GetSingleton()->unk924 != 0;
 	}
 
-	void RegisterForCustomMarkerChange(RE::TESQuest* script)
+	void RegisterForCustomMarkerChange(RE::TESQuest*)
 	{
 		//onCustomMarkerChange.Register();
 	}
-	void UnregisterForCustomMarkerChange(RE::TESQuest* script)
+	void UnregisterForCustomMarkerChange(RE::TESQuest*)
 	{
 	}
 
-	void RegisterForPlayerDialogue(RE::TESQuest* script)
+	void RegisterForPlayerDialogue(RE::TESQuest*)
 	{
 		//onCustomMarkerChange.Register();
 	}
-	void UnregisterForPlayerDialogue(RE::TESQuest* script)
+	void UnregisterForPlayerDialogue(RE::TESQuest*)
 	{
 	}
 
 	RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* actor)
 	{
-		return actor;
+
 	}
 }
 
@@ -68,7 +75,7 @@ bool RegisterFuncs(RE::BSScript::Internal::VirtualMachine* a_vm)
 }
 
 
-extern "C" __declspec(dllexport) constinit auto SKSEPlugin_Version = []() {
+extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	SKSE::PluginVersionData v;
 
 	v.PluginVersion('AEr1');
@@ -80,7 +87,7 @@ extern "C" __declspec(dllexport) constinit auto SKSEPlugin_Version = []() {
 	return v;
 }();
 
-extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
+extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
 
