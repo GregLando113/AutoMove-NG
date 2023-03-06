@@ -10,6 +10,11 @@ file(GLOB HEADERS
     src/*.h
 )
 
+target_compile_features(
+	AutoMove
+	PRIVATE
+		cxx_std_20
+)
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_compile_options(
 		AutoMove

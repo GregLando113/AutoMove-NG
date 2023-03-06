@@ -5,10 +5,10 @@
 
 namespace AutoMove
 {
-	SKSE::RegistrationSet<int> onCustomMarkerChange("OnCustomMarkerChange");
-	SKSE::RegistrationSet<RE::Actor, bool> onPlayerDialogue("OnPlayerDialogue");
-	SKSE::RegistrationSet<void> onFastTravelConfirm("OnFastTravelConfirm");
-	REL::ID id_obj2(24523);
+	// SKSE::RegistrationSet<int> onCustomMarkerChange("OnCustomMarkerChange");
+	// SKSE::RegistrationSet<RE::Actor, bool> onPlayerDialogue("OnPlayerDialogue");
+	// SKSE::RegistrationSet<void> onFastTravelConfirm("OnFastTravelConfirm");
+	// REL::ID id_obj2(24523);
 
 
 	bool GetPtrByRefHandle(uint32_t* a, uintptr_t* out)
@@ -57,9 +57,9 @@ namespace AutoMove
 	{
 	}
 
-	RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* actor)
+	RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* a)
 	{
-
+		return a;
 	}
 }
 
@@ -72,13 +72,14 @@ bool RegisterFuncs(RE::BSScript::Internal::VirtualMachine* a_vm)
 	a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", AutoMove::UnregisterForCustomMarkerChange);
 	a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", AutoMove::RegisterForPlayerDialogue);
 	a_vm->RegisterFunction("UnregisterForPlayerDialogue", "AutoMove", AutoMove::UnregisterForPlayerDialogue);
+	return true;
 }
 
 
-extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
+extern "C" __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Version = []() {
 	SKSE::PluginVersionData v;
 
-	v.PluginVersion('AEr1');
+	v.PluginVersion(REL::Version(0,1,0));
 	v.PluginName("Auto Move AE");
 
 	v.UsesAddressLibrary(true);
@@ -87,7 +88,7 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	return v;
 }();
 
-extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
+extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
 
