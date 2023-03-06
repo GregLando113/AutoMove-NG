@@ -1,9 +1,21 @@
 {
-  "name": "example",
-  "version": "1",
+  "name": "automove-ae",
+  "version-string": "1.0.0",
+  "port-version": 0,
   "dependencies": [
+    "boost-atomic",
     "boost-stl-interfaces",
     "rsm-binary-io",
-    "spdlog"
-  ]
+    "span-lite",
+    "spdlog",
+    "commonlibsse-ng",
+    "commonlibsse-ng-ae"
+  ],
+  "overrides": [
+    {
+      "name": "fmt",
+      "version": "8.0.1"
+    }
+  ],
+  "builtin-baseline": "8daf70c56ba9581f5251a5d4675eb771b6b34957"
 }

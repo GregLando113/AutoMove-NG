@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(AutoMove)
+project(AutoMove VERSION 0.1.0)
 
-add_library(AutoMove SHARED)
+find_package(CommonLibSSE CONFIG REQUIRED)
+
 file(GLOB SOURCES
     src/*.cpp
 )
@@ -10,40 +11,31 @@ file(GLOB HEADERS
     src/*.h
 )
 
-target_compile_features(
-	AutoMove
-	PRIVATE
-		cxx_std_20
-)
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	target_compile_options(
-		AutoMove
-		PRIVATE
-			"/sdl"	# Enable Additional Security Checks
-			"/utf-8"	# Set Source and Executable character sets to UTF-8
-			"/Zi"	# Debug Information Format
+add_commonlibsse_plugin(AutoMove
+    # The plugin's name, defaults to target.
+    NAME "AutoMove AE"
 
-			"/permissive-"	# Standards conformance
-			"/Zc:preprocessor"	# Enable preprocessor conformance mode
+    # The plugin's author, empty by default.
+    AUTHOR "xILARTH"
 
-			"/wd4200" # nonstandard extension used : zero-sized array in struct/union
+    # The support email address, empty by default.
+    EMAIL "kaos4d1@gmail.com"
 
-			"$<$<CONFIG:DEBUG>:>"
-			"$<$<CONFIG:RELEASE>:/Zc:inline;/JMC-;/Ob3>"
-	)
+    # The plugin version number, defaults to ${PROJECT_VERSION}.
+    VERSION ${PROJECT_VERSION}
 
-	target_link_options(
-		AutoMove
-		PRIVATE
-			"$<$<CONFIG:DEBUG>:/INCREMENTAL;/OPT:NOREF;/OPT:NOICF>"
-			"$<$<CONFIG:RELEASE>:/INCREMENTAL:NO;/OPT:REF;/OPT:ICF;/DEBUG:FULL>"
-	)
-endif()
+    # Indicates the plugin is compatible with all runtimes via address library. This is the default if no
+    # other compatibilility mode is specified. Can be used with USE_SIGNATURE_SCANNING but not
+    # COMPATIBLE_RUNTIMES.
+    USE_ADDRESS_LIBRARY
 
+    # Indicates the plugin is compatible with all runtimes via signature scanning.  Can be used with
+    # USE_ADDRESS_LIBRARY but not COMPATIBLE_RUNTIMES.
+    USE_SIGNATURE_SCANNING
 
-target_sources(AutoMove PRIVATE ${SOURCES} ${HEADERS})
+    # Omit from all targets, same as used with add_library.
+    EXCLUDE_FROM_ALL
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/CommonLibSSE" CommonLibSSE EXCLUDE_FROM_ALL)
-target_link_libraries(AutoMove PRIVATE
-    CommonLibSSE::CommonLibSSE
+    # List of the sources to include in the target, as would be the parameters to add_library.
+    SOURCES ${SOURCES} ${HEADERS}
 )
