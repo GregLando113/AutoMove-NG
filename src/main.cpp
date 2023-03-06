@@ -76,19 +76,7 @@ bool RegisterFuncs(RE::BSScript::IVirtualMachine* a_vm)
 }
 
 
-extern "C" __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Version = []() {
-	SKSE::PluginVersionData v;
-
-	v.PluginVersion(REL::Version(0,1,0));
-	v.PluginName("Auto Move AE");
-
-	v.UsesAddressLibrary(true);
-	v.CompatibleVersions({ SKSE::RUNTIME_LATEST });
-
-	return v;
-}();
-
-extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
+SKSEPluginLoad(const LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
 	SKSE::AllocTrampoline(1 << 9);
