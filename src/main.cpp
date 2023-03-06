@@ -11,7 +11,7 @@ namespace AutoMove
 	// REL::ID id_obj2(24523);
 
 
-	bool GetPtrByRefHandle(uint32_t* a, uintptr_t* out)
+	bool GetPtrByRefHandle(RE::ObjectRefHandle* a, uintptr_t* out)
 	{
 		REL::Relocation<decltype(GetPtrByRefHandle)> fn(19700);
 		return fn(a, out);
@@ -29,7 +29,7 @@ namespace AutoMove
 	{
 		auto player = RE::PlayerCharacter::GetSingleton();
 		uintptr_t handleptr = 0;
-		bool result = GetPtrByRefHandle(&player->unk924, &handleptr);
+		bool result = GetPtrByRefHandle((RE::ObjectRefHandle*)&player->unk924, &handleptr);
 		if (handleptr)
 		{
 			result = ForceRefToAlias(script, aliasID, handleptr);
@@ -38,7 +38,7 @@ namespace AutoMove
 
 	bool IsCustomDestinationActive(RE::StaticFunctionTag*)
 	{
-		return RE::PlayerCharacter::GetSingleton()->unk924 != 0;
+		return (bool)(*(RE::ObjectRefHandle*)&RE::PlayerCharacter::GetSingleton()->unk924);
 	}
 
 	void RegisterForCustomMarkerChange(RE::TESQuest*)
@@ -63,15 +63,15 @@ namespace AutoMove
 	}
 }
 
-bool RegisterFuncs(RE::BSScript::Internal::VirtualMachine* a_vm)
+bool RegisterFuncs(RE::BSScript::IVirtualMachine* a_vm)
 {
 	a_vm->RegisterFunction("ForceDestinationMarkerIntoAliasID", "AutoMove", AutoMove::ForceDestinationMarkerIntoAliasID);
 	a_vm->RegisterFunction("IsCustomDestinationActive", "AutoMove", AutoMove::IsCustomDestinationActive);
-	a_vm->RegisterFunction("GetCurrentMount", "AutoMove", AutoMove::GetCurrentMount);
-	a_vm->RegisterFunction("RegisterForCustomMarkerChange", "AutoMove", AutoMove::RegisterForCustomMarkerChange);
-	a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", AutoMove::UnregisterForCustomMarkerChange);
-	a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", AutoMove::RegisterForPlayerDialogue);
-	a_vm->RegisterFunction("UnregisterForPlayerDialogue", "AutoMove", AutoMove::UnregisterForPlayerDialogue);
+	//a_vm->RegisterFunction("GetCurrentMount", "AutoMove", AutoMove::GetCurrentMount);
+	//a_vm->RegisterFunction("RegisterForCustomMarkerChange", "AutoMove", AutoMove::RegisterForCustomMarkerChange);
+	//a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", AutoMove::UnregisterForCustomMarkerChange);
+	//a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", AutoMove::RegisterForPlayerDialogue);
+	//a_vm->RegisterFunction("UnregisterForPlayerDialogue", "AutoMove", AutoMove::UnregisterForPlayerDialogue);
 	return true;
 }
 
@@ -91,6 +91,7 @@ extern "C" __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Ve
 extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
+	SKSE::AllocTrampoline(1 << 9);
 
 	SKSE::GetPapyrusInterface()->Register(RegisterFuncs);
 
