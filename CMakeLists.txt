@@ -61,3 +61,9 @@ target_compile_definitions(
         "$<$<BOOL:${ENABLE_SKYRIM_AE}>:ENABLE_SKYRIM_AE=1>"
         "$<$<BOOL:${ENABLE_SKYRIM_VR}>:ENABLE_SKYRIM_VR=0>"
 )
+
+add_custom_command(
+    TARGET AutoMove
+    POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "$ENV{AUTOMOVE_OUTPUT_ROOT}/SKSE/Plugins/"
+)
