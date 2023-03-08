@@ -12,9 +12,9 @@ namespace AutoMove
 
 
 
-	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::NiPointer<RE::TESObjectREFR> ref)
+	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::TESObjectREFR* ref)
 	{
-		REL::Relocation<decltype(ForceRefToAlias)> fn(25052);
+		REL::Relocation<decltype(ForceRefToAlias)> fn{ RELOCATION_ID(24523,25052) };
 		return fn(script, aliasID, ref);
 	}
 
@@ -26,7 +26,7 @@ namespace AutoMove
 		bool result = RE::LookupReferenceByHandle(player->GetInfoRuntimeData().unk054.native_handle(), handleptr);
 		if (handleptr)
 		{
-			result = ForceRefToAlias(script, aliasID, handleptr);
+			result = ForceRefToAlias(script, aliasID, handleptr.get());
 		}
 	}
 
