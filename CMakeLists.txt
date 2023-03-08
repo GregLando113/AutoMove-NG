@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(AutoMove VERSION 0.1.0.0)
+project(AutoMove VERSION 0.1.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+
 
 include(GNUInstallDirs)
 find_package(CommonLibSSE CONFIG REQUIRED)
@@ -33,4 +37,27 @@ add_commonlibsse_plugin(AutoMove
 
     # List of the sources to include in the target, as would be the parameters to add_library.
     SOURCES ${SOURCES} ${HEADERS}
+)
+
+target_compile_features(
+    AutoMove
+    PUBLIC
+        cxx_std_23
+)
+
+target_precompile_headers(
+    ${PROJECT_NAME}
+    PRIVATE
+        src/PCH.h
+)
+
+target_compile_definitions(
+    AutoMove
+    PUBLIC
+        WINVER=0x0601	# windows 7, minimum supported version by skyrim special edition
+        _WIN32_WINNT=0x0601
+        "$<$<BOOL:${SKSE_SUPPORT_XBYAK}>:SKSE_SUPPORT_XBYAK=1>"
+        "$<$<BOOL:${ENABLE_SKYRIM_SE}>:ENABLE_SKYRIM_SE=1>"
+        "$<$<BOOL:${ENABLE_SKYRIM_AE}>:ENABLE_SKYRIM_AE=1>"
+        "$<$<BOOL:${ENABLE_SKYRIM_VR}>:ENABLE_SKYRIM_VR=0>"
 )

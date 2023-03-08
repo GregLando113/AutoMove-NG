@@ -58,6 +58,15 @@
       ],
       "name": "vs2022-windows",
       "toolset": "v143"
+    },
+    {
+      "generator": "Ninja",
+      "inherits": [
+        "cmake-dev",
+        "vcpkg",
+        "windows"
+      ],
+      "name": "clang-windows"
     }
   ],
   "version": 3

@@ -11,14 +11,8 @@ namespace AutoMove
 	// REL::ID id_obj2(24523);
 
 
-	bool GetPtrByRefHandle(RE::ObjectRefHandle* a, uintptr_t* out)
-	{
-		REL::Relocation<decltype(GetPtrByRefHandle)> fn(19700);
-		return fn(a, out);
-	}
 
-
-	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, uintptr_t ref)
+	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::NiPointer<RE::TESObjectREFR> ref)
 	{
 		REL::Relocation<decltype(ForceRefToAlias)> fn(25052);
 		return fn(script, aliasID, ref);
@@ -28,8 +22,8 @@ namespace AutoMove
 	void ForceDestinationMarkerIntoAliasID(RE::TESQuest* script, unsigned int aliasID)
 	{
 		auto player = RE::PlayerCharacter::GetSingleton();
-		uintptr_t handleptr = 0;
-		bool result = GetPtrByRefHandle((RE::ObjectRefHandle*)&player->unk924, &handleptr);
+		RE::NiPointer<RE::TESObjectREFR> handleptr;
+		bool result = RE::LookupReferenceByHandle(player->GetInfoRuntimeData().unk054.native_handle(), handleptr);
 		if (handleptr)
 		{
 			result = ForceRefToAlias(script, aliasID, handleptr);
@@ -38,7 +32,7 @@ namespace AutoMove
 
 	bool IsCustomDestinationActive(RE::StaticFunctionTag*)
 	{
-		return (bool)(*(RE::ObjectRefHandle*)&RE::PlayerCharacter::GetSingleton()->unk924);
+		return (bool)RE::PlayerCharacter::GetSingleton()->GetInfoRuntimeData().unk054;
 	}
 
 	void RegisterForCustomMarkerChange(RE::TESQuest*)
@@ -59,7 +53,7 @@ namespace AutoMove
 
 	RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* a)
 	{
-		return a;
+		return a->QLastRiddenMount().get().get();
 	}
 }
 
@@ -67,16 +61,16 @@ bool RegisterFuncs(RE::BSScript::IVirtualMachine* a_vm)
 {
 	a_vm->RegisterFunction("ForceDestinationMarkerIntoAliasID", "AutoMove", AutoMove::ForceDestinationMarkerIntoAliasID);
 	a_vm->RegisterFunction("IsCustomDestinationActive", "AutoMove", AutoMove::IsCustomDestinationActive);
-	//a_vm->RegisterFunction("GetCurrentMount", "AutoMove", AutoMove::GetCurrentMount);
-	//a_vm->RegisterFunction("RegisterForCustomMarkerChange", "AutoMove", AutoMove::RegisterForCustomMarkerChange);
-	//a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", AutoMove::UnregisterForCustomMarkerChange);
-	//a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", AutoMove::RegisterForPlayerDialogue);
-	//a_vm->RegisterFunction("UnregisterForPlayerDialogue", "AutoMove", AutoMove::UnregisterForPlayerDialogue);
+	a_vm->RegisterFunction("GetCurrentMount", "AutoMove", AutoMove::GetCurrentMount);
+	a_vm->RegisterFunction("RegisterForCustomMarkerChange", "AutoMove", AutoMove::RegisterForCustomMarkerChange);
+	a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", AutoMove::UnregisterForCustomMarkerChange);
+	a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", AutoMove::RegisterForPlayerDialogue);
+	a_vm->RegisterFunction("UnregisterForPlayerDialogue", "AutoMove", AutoMove::UnregisterForPlayerDialogue);
 	return true;
 }
 
 
-SKSEPluginLoad(const LoadInterface* a_skse)
+SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
 	SKSE::AllocTrampoline(1 << 9);
