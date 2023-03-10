@@ -7,30 +7,20 @@ namespace AutoMove
 {
 	namespace Hooks
 	{
-		using PlacePlayerMarkerHook_t = decltype(&CPlacePlayerMarkerCallbackFunctor::RunHook);
-		static PlacePlayerMarkerHook_t oPlacePlayerMarker;
+		static REL::Relocation<decltype(HKPlacePlayerMarkerCallbackFunctor::RunHook)> oPlacePlayerMarker;
 
-		void CPlacePlayerMarkerCallbackFunctor::Install()
+		void HKPlacePlayerMarkerCallbackFunctor::Install()
 		{
-			union {
-				uintptr_t ptr;
-				PlacePlayerMarkerHook_t fn;
-			} cpp_bs;
-
-			// onMarkerChange
-			uintptr_t marker_vt = (CPlacePlayerMarkerCallbackFunctor::VTABLE[0].address() + 8);
-			cpp_bs.ptr = *(uintptr_t*)marker_vt;
-			oPlacePlayerMarker = cpp_bs.fn;
-			cpp_bs.fn = &CPlacePlayerMarkerCallbackFunctor::RunHook;
-			REL::safe_write(marker_vt, cpp_bs.ptr);
+			REL::Relocation<std::uintptr_t> MarkerFunctorVTBL{ HKPlacePlayerMarkerCallbackFunctor::VTABLE[0] };
+			oPlacePlayerMarker = MarkerFunctorVTBL.write_vfunc(1, HKPlacePlayerMarkerCallbackFunctor::RunHook);
 		}
 
 
-		void CPlacePlayerMarkerCallbackFunctor::RunHook(RE::IMessageBoxCallback::Message msg)
+		void HKPlacePlayerMarkerCallbackFunctor::RunHook(RE::BSIntrusiveRefCounted* functor, RE::IMessageBoxCallback::Message a_msg)
 		{
 			auto& onCustomMarkerChange = Papyrus::GetOnCustomMarkerChangeEvent();
-			onCustomMarkerChange.QueueEvent(msg);
-			return (this->*oPlacePlayerMarker)(msg);
+			onCustomMarkerChange.QueueEvent(a_msg);
+			return oPlacePlayerMarker(functor, a_msg);
 		}
 	}
 }

@@ -7,28 +7,18 @@ namespace AutoMove
 {
 	namespace Hooks
 	{
-		using SetDialogueWithPlayerHook_t = decltype(&CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook);
-		static SetDialogueWithPlayerHook_t oSetDialogueWithPlayer;
+		static REL::Relocation<decltype(HKSetDialogueWithPlayer::SetDialogueWithPlayerHook)> oSetDialogueWithPlayer;
 
-		void CSetDialogueWithPlayerHook::Install()
+		void HKSetDialogueWithPlayer::Install()
 		{
-			union {
-				uintptr_t ptr;
-				SetDialogueWithPlayerHook_t fn;
-			} cpp_bs;
-
-			// onPlayerDialogue
-			uintptr_t dialog_vt = (RE::Character::VTABLE[0].address() + 520);
-			cpp_bs.ptr = *(uintptr_t*)dialog_vt;
-			oSetDialogueWithPlayer = cpp_bs.fn;
-			cpp_bs.fn = &CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook;
-			REL::safe_write(dialog_vt, cpp_bs.ptr);
+			REL::Relocation<std::uintptr_t> CharVTBL{ RE::Character::VTABLE[0] };
+			oSetDialogueWithPlayer = CharVTBL.write_vfunc(65, HKSetDialogueWithPlayer::SetDialogueWithPlayerHook);
 		}
-		bool CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook(bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic)
+		bool HKSetDialogueWithPlayer::SetDialogueWithPlayerHook(RE::Actor* self, bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic)
 		{
 			auto& onPlayerDialogue = Papyrus::GetOnPlayerDialogueEvent();
-			onPlayerDialogue.QueueEvent(this, a_flag);
-			return (this->*oSetDialogueWithPlayer)(a_flag, a_forceGreet, a_topic);
+			onPlayerDialogue.QueueEvent(self, a_flag);
+			return oSetDialogueWithPlayer(self, a_flag, a_forceGreet, a_topic);
 		}
 	}
 }
