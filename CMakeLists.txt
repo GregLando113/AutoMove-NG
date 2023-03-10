@@ -69,3 +69,7 @@ add_custom_command(
     POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "$ENV{AUTOMOVE_OUTPUT_ROOT}/SKSE/Plugins/"
 )
+
+find_package(PythonInterp)
+find_package(Python)
+install(CODE "execute_process(COMMAND \"${PYTHON_EXECUTABLE}\" \"${CMAKE_CURRENT_SOURCE_DIR}/scripts/mkrelease.py\" -v ${PROJECT_VERSION} -f \"$<TARGET_FILE:${PROJECT_NAME}>\")")
