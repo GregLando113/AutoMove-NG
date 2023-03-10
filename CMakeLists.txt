@@ -11,9 +11,11 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 
 file(GLOB SOURCES
     src/*.cpp
+    src/Hooks/*.cpp
 )
 file(GLOB HEADERS
     src/*.h
+    src/Hooks/*.h
 )
 
 add_commonlibsse_plugin(AutoMove
