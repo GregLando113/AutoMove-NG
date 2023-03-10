@@ -65,7 +65,10 @@ namespace AutoMove
 
 		RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* a)
 		{
-			return a->QLastRiddenMount().get().get();
+			RE::ActorPtr mount_ptr;
+			if (!a->GetMount(mount_ptr))
+				return nullptr;
+			return mount_ptr.get();
 		}
 
 		bool RegisterFuncs(RE::BSScript::IVirtualMachine* a_vm)
