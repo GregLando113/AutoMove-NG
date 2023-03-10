@@ -7,22 +7,22 @@
 
 namespace AutoMove
 {
-	// SKSE::RegistrationSet<void> onFastTravelConfirm("OnFastTravelConfirm");
-	// REL::ID id_obj2(24523);
 
 	SKSE::RegistrationSet<RE::IMessageBoxCallback::Message>& GetOnCustomMarkerChangeEvent()
 	{
 		static SKSE::RegistrationSet<RE::IMessageBoxCallback::Message> onCustomMarkerChange("OnCustomMarkerChange");
+		return onCustomMarkerChange;
 	}
 
 	SKSE::RegistrationSet<RE::Actor*, bool>& GetOnPlayerDialogueEvent()
 	{
 		static SKSE::RegistrationSet<RE::Actor*, bool> onPlayerDialogue("OnPlayerDialogue");
+		return onPlayerDialogue;
 	}
 
 	bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::TESObjectREFR* ref)
 	{
-		REL::Relocation<decltype(ForceRefToAlias)> fn{ RELOCATION_ID(24523,25052) };
+		static REL::Relocation<decltype(ForceRefToAlias)> fn{ RELOCATION_ID(24523,25052) };
 		return fn(script, aliasID, ref);
 	}
 
@@ -75,28 +75,28 @@ namespace AutoMove
 		class CSetDialogueWithPlayerHook : public RE::Actor
 		{
 		public:
-			bool SetDialogueWithPlayer(bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic) override;
+			bool SetDialogueWithPlayerHook(bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic);
 		};
 
-		using SetDialogueWithPlayerHook_t = decltype(CSetDialogueWithPlayerHook::SetDialogueWithPlayer);
+		using SetDialogueWithPlayerHook_t = decltype(&CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook);
 		static SetDialogueWithPlayerHook_t oSetDialogueWithPlayer;
-		bool CSetDialogueWithPlayerHook::SetDialogueWithPlayer(bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic)
+		bool CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook(bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic)
 		{
 			auto& onPlayerDialogue = GetOnPlayerDialogueEvent();
-			onPlayerDialogue.QueueEvent(this, a_forceGreet);
+			onPlayerDialogue.QueueEvent(this, a_flag);
 			return (this->*oSetDialogueWithPlayer)(a_flag, a_forceGreet, a_topic);
 		}
 
-		class CPlacePlayerMarkerCallbackFunctor : public RE::IMessageBoxCallback, RE::BSIntrusiveRefCounted
+		class CPlacePlayerMarkerCallbackFunctor : public RE::BSIntrusiveRefCounted
 		{
 		public:
 			inline static constexpr auto VTABLE = RE::VTABLE___PlacePlayerMarkerCallbackFunctor;
 
-			void Run(RE::IMessageBoxCallback::Message a_msg) override;
+			void RunHook(RE::IMessageBoxCallback::Message a_msg);
 		};
-		using PlacePlayerMarkerHook_t = decltype(CPlacePlayerMarkerCallbackFunctor::Run);
+		using PlacePlayerMarkerHook_t = decltype(&CPlacePlayerMarkerCallbackFunctor::RunHook);
 		static PlacePlayerMarkerHook_t oPlacePlayerMarker;
-		void CPlacePlayerMarkerCallbackFunctor::Run(RE::IMessageBoxCallback::Message msg)
+		void CPlacePlayerMarkerCallbackFunctor::RunHook(RE::IMessageBoxCallback::Message msg)
 		{
 			auto& onCustomMarkerChange = GetOnCustomMarkerChangeEvent();
 			onCustomMarkerChange.QueueEvent(msg);
@@ -106,8 +106,6 @@ namespace AutoMove
 
 		void Install()
 		{
-			SKSE::Trampoline& tramp = SKSE::GetTrampoline();
-
 			{
 				union {
 					uintptr_t ptr;
@@ -116,9 +114,9 @@ namespace AutoMove
 
 				// onPlayerDialogue
 				uintptr_t dialog_vt = (RE::Character::VTABLE[0].address() + 520);
-				cpp_bs.fn = oSetDialogueWithPlayer;
 				cpp_bs.ptr = *(uintptr_t*)dialog_vt;
-				cpp_bs.fn = CSetDialogueWithPlayerHook::SetDialogueWithPlayer;
+				oSetDialogueWithPlayer = cpp_bs.fn;
+				cpp_bs.fn = &CSetDialogueWithPlayerHook::SetDialogueWithPlayerHook;
 				REL::safe_write(dialog_vt, cpp_bs.ptr);
 			}
 
@@ -130,9 +128,9 @@ namespace AutoMove
 
 				// onMarkerChange
 				uintptr_t marker_vt = (CPlacePlayerMarkerCallbackFunctor::VTABLE[0].address() + 8);
-				cpp_bs.fn = oPlacePlayerMarker;
 				cpp_bs.ptr = *(uintptr_t*)marker_vt;
-				cpp_bs.fn = CPlacePlayerMarkerCallbackFunctor::Run;
+				oPlacePlayerMarker = cpp_bs.fn;
+				cpp_bs.fn = &CPlacePlayerMarkerCallbackFunctor::RunHook;
 				REL::safe_write(marker_vt, cpp_bs.ptr);
 			}
 
@@ -161,7 +159,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
 	SKSE::GetPapyrusInterface()->Register(RegisterFuncs);
 
-	AutoMove::Hooks::Install();
+	//AutoMove::Hooks::Install();
 
 	return true;
 }
