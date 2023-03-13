@@ -12,7 +12,7 @@ namespace AutoMove
 		{
 			HKPlacePlayerMarkerCallbackFunctor::Install();
 			HKSetDialogueWithPlayer::Install();
-			//InstallCameraHooks();
+			InstallCameraHooks();
 		}
 	}
 }
