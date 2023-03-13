@@ -2,6 +2,8 @@
 
 #include "SKSE/Interfaces.h"
 
+#pragma warning(disable: 4100)
+
 namespace AutoMove
 {
 	void OnGameSave(SKSE::SerializationInterface* a_inf);

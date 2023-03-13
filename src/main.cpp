@@ -22,7 +22,6 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 		s->SetSaveCallback(AutoMove::OnGameSave);
 		s->SetLoadCallback(AutoMove::OnGameLoad);
 		s->SetRevertCallback(AutoMove::OnGameRevert);
-
 	}
 	AutoMove::Hooks::Install();
 	return true;
