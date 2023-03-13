@@ -20,7 +20,7 @@ file(GLOB HEADERS
 
 add_commonlibsse_plugin(AutoMove
     # The plugin's name, defaults to target.
-    NAME "AutoMove AE"
+    NAME "AutoMove NG"
 
     # The plugin's author, empty by default.
     AUTHOR "xILARTH"
