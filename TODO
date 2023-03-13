@@ -2,7 +2,6 @@ v0.2.0.0:
 	- Implement camera patch to allow camera movement during auto move in person.
  
 Before v1.0.0.0:
-﻿	- AutoMove movement persist across save/loads
 	- Implement remainder of original Auto Move patches.
 	- Implement NG unit tests.
 	- Clean up code, basic doc for source code release
