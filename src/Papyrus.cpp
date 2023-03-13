@@ -6,16 +6,16 @@ namespace AutoMove
 {
 	namespace Papyrus
 	{
-		SKSE::RegistrationSet<RE::IMessageBoxCallback::Message>& GetOnCustomMarkerChangeEvent()
+		SKSE::RegistrationSet<RE::IMessageBoxCallback::Message>* GetOnCustomMarkerChangeEvent()
 		{
 			static SKSE::RegistrationSet<RE::IMessageBoxCallback::Message> onCustomMarkerChange("OnCustomMarkerChange");
-			return onCustomMarkerChange;
+			return &onCustomMarkerChange;
 		}
 
-		SKSE::RegistrationSet<RE::Actor*, bool>& GetOnPlayerDialogueEvent()
+		SKSE::RegistrationSet<RE::Actor*, bool>* GetOnPlayerDialogueEvent()
 		{
 			static SKSE::RegistrationSet<RE::Actor*, bool> onPlayerDialogue("OnPlayerDialogue");
-			return onPlayerDialogue;
+			return &onPlayerDialogue;
 		}
 
 		bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::TESObjectREFR* ref)
@@ -43,24 +43,24 @@ namespace AutoMove
 
 		void RegisterForCustomMarkerChange(RE::TESQuest* script)
 		{
-			auto& onCustomMarkerChange = GetOnCustomMarkerChangeEvent();
-			onCustomMarkerChange.Register(script);
+			auto onCustomMarkerChange = GetOnCustomMarkerChangeEvent();
+			onCustomMarkerChange->Register(script);
 		}
 		void UnregisterForCustomMarkerChange(RE::TESQuest* script)
 		{
-			auto& onCustomMarkerChange = GetOnCustomMarkerChangeEvent();
-			onCustomMarkerChange.Unregister(script);
+			auto onCustomMarkerChange = GetOnCustomMarkerChangeEvent();
+			onCustomMarkerChange->Unregister(script);
 		}
 
 		void RegisterForPlayerDialogue(RE::TESQuest* script)
 		{
-			auto& onPlayerDialogue = GetOnPlayerDialogueEvent();
-			onPlayerDialogue.Register(script);
+			auto onPlayerDialogue = GetOnPlayerDialogueEvent();
+			onPlayerDialogue->Register(script);
 		}
 		void UnregisterForPlayerDialogue(RE::TESQuest* script)
 		{
-			auto& onPlayerDialogue = GetOnPlayerDialogueEvent();
-			onPlayerDialogue.Unregister(script);
+			auto onPlayerDialogue = GetOnPlayerDialogueEvent();
+			onPlayerDialogue->Unregister(script);
 		}
 
 		RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* a)

@@ -18,8 +18,8 @@ namespace AutoMove
 
 		void HKPlacePlayerMarkerCallbackFunctor::RunHook(RE::BSIntrusiveRefCounted* functor, RE::IMessageBoxCallback::Message a_msg)
 		{
-			auto& onCustomMarkerChange = Papyrus::GetOnCustomMarkerChangeEvent();
-			onCustomMarkerChange.QueueEvent(a_msg);
+			auto onCustomMarkerChange = Papyrus::GetOnCustomMarkerChangeEvent();
+			onCustomMarkerChange->QueueEvent(a_msg);
 			return oPlacePlayerMarker(functor, a_msg);
 		}
 	}

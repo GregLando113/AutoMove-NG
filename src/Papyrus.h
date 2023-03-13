@@ -5,8 +5,8 @@ namespace AutoMove
 {
 	namespace Papyrus
 	{
-		SKSE::RegistrationSet<RE::IMessageBoxCallback::Message>& GetOnCustomMarkerChangeEvent();
-		SKSE::RegistrationSet<RE::Actor*, bool>& GetOnPlayerDialogueEvent();
+		SKSE::RegistrationSet<RE::IMessageBoxCallback::Message>* GetOnCustomMarkerChangeEvent();
+		SKSE::RegistrationSet<RE::Actor*, bool>* GetOnPlayerDialogueEvent();
 
 
 		bool ForceRefToAlias(RE::TESQuest* script, unsigned int aliasID, RE::TESObjectREFR* ref);

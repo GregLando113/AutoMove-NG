@@ -16,8 +16,8 @@ namespace AutoMove
 		}
 		bool HKSetDialogueWithPlayer::SetDialogueWithPlayerHook(RE::Actor* self, bool a_flag, bool a_forceGreet, RE::TESTopicInfo* a_topic)
 		{
-			auto& onPlayerDialogue = Papyrus::GetOnPlayerDialogueEvent();
-			onPlayerDialogue.QueueEvent(self, a_flag);
+			auto onPlayerDialogue = Papyrus::GetOnPlayerDialogueEvent();
+			onPlayerDialogue->QueueEvent(self, a_flag);
 			return oSetDialogueWithPlayer(self, a_flag, a_forceGreet, a_topic);
 		}
 	}
