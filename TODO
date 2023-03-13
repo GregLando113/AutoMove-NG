@@ -1,0 +1,16 @@
+
+v0.2.0.0:
+	- Implement camera patch to allow camera movement during auto move in person.
+ 
+Before v1.0.0.0:
+	- Implement remainder of original Auto Move patches.
+	- Implement NG unit tests.
+	- Clean up code, basic doc for source code release
+ 
+Future Releases:
+	- Holding auto move hotkey clears the custom map marker without going to map.
+	- Better custom map marker placement and improvements.
+	- MCM customization support
+	- navmesh/pathfinding patches to remove the amount of movement wierdness and awkward waypoints.
+	- Make stairs/steps not make the PC act like they need a stair lift installed
+	
