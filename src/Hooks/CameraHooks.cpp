@@ -76,6 +76,7 @@ namespace AutoMove
 			InstallThirdPersonState_SetFreeLookModeHook();
 			InstallDragonCameraState_UpdRotationHook();
 			InstallHorseCameraState_UpdRotationHook();
+			//InstallHorseCameraState_HandleLookInputHook();
 			InstallPlayerCam_subHook();
 		}
 	}

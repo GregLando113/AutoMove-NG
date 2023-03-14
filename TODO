@@ -1,5 +1,9 @@
 v0.2.0.0:
 	- Implement camera patch to allow camera movement during auto move in person.
+	
+v0.3.0.0:
+	- Fix horse camera pitch glitching out from -1 to 1 as you move yaw
+	- Verify dragon camera is working
  
 Before v1.0.0.0:
 	- Implement remainder of original Auto Move patches.
