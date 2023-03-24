@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "Papyrus.h"
+#include "CustomDestination.h"
 
 
 namespace AutoMove
@@ -27,9 +28,10 @@ namespace AutoMove
 
 		void ForceDestinationMarkerIntoAliasID(RE::TESQuest* script, unsigned int aliasID)
 		{
-			auto player = RE::PlayerCharacter::GetSingleton();
 			RE::NiPointer<RE::TESObjectREFR> handleptr;
-			bool result = RE::LookupReferenceByHandle(player->GetInfoRuntimeData().unk054.native_handle(), handleptr);
+			if (!GetPlayerCustomDestinationRef())
+				return;
+			bool result = RE::LookupReferenceByHandle(GetPlayerCustomDestinationRef().native_handle(), handleptr);
 			if (handleptr)
 			{
 				result = ForceRefToAlias(script, aliasID, handleptr.get());
@@ -38,7 +40,7 @@ namespace AutoMove
 
 		bool IsCustomDestinationActive(RE::StaticFunctionTag*)
 		{
-			return (bool)RE::PlayerCharacter::GetSingleton()->GetInfoRuntimeData().unk054;
+			return (bool)GetPlayerCustomDestinationRef();
 		}
 
 		void RegisterForCustomMarkerChange(RE::TESQuest* script)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(AutoMove VERSION 0.2.0.0 LANGUAGES CXX)
+project(AutoMove VERSION 0.3.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
@@ -9,13 +9,24 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 include(GNUInstallDirs)
 find_package(CommonLibSSE CONFIG REQUIRED)
 
-file(GLOB SOURCES
-    src/*.cpp
-    src/Hooks/*.cpp
+set(SOURCES
+         src/CustomDestination.cpp
+         src/main.cpp
+         src/Papyrus.cpp
+         src/PCH.cpp
+         src/Serialization.cpp
+         src/Hooks/AutoMoveHook.cpp
+         src/Hooks/CameraHooks.cpp
+         src/Hooks/Hooks.cpp
+         src/Hooks/OnMarkerChangeHook.cpp
+         src/Hooks/OnPlayerDialogueHook.cpp
 )
-file(GLOB HEADERS
-    src/*.h
-    src/Hooks/*.h
+set(HEADERS
+         src/CustomDestination.h
+         src/Papyrus.h
+         src/PCH.h
+         src/Serialization.h
+         src/Hooks/Hooks.h
 )
 
 add_commonlibsse_plugin(AutoMove
