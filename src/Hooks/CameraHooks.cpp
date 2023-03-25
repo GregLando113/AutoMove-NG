@@ -57,7 +57,7 @@ namespace AutoMove
 
 		void InstallHorseCameraState_HandleLookInputHook()
 		{
-			static REL::Relocation<uintptr_t> HorseCameraState_HandleLookInput{ RELOCATION_ID(49839, 50904) };
+			static REL::Relocation<uintptr_t> HorseCameraState_HandleLookInput{ RELOCATION_ID(49839, 50770) };
 
 			auto& tramp = SKSE::GetTrampoline();
 			tramp.write_call<5>(HorseCameraState_HandleLookInput.address() + REL::Relocate(151, 140), CharGetRotationXHook);
@@ -76,7 +76,7 @@ namespace AutoMove
 			InstallThirdPersonState_SetFreeLookModeHook();
 			InstallDragonCameraState_UpdRotationHook();
 			InstallHorseCameraState_UpdRotationHook();
-			//InstallHorseCameraState_HandleLookInputHook();
+			InstallHorseCameraState_HandleLookInputHook();
 			InstallPlayerCam_subHook();
 		}
 	}
