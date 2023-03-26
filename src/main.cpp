@@ -8,13 +8,15 @@
 #include "Serialization.h"
 #include "Hooks/Hooks.h"
 
-#if 0
+#define WAIT_DEBUGGER 1
+
+#if WAIT_DEBUGGER
 #include <Windows.h>
 #endif
 
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
-#if 0
+#if WAIT_DEBUGGER
 	while (!IsDebuggerPresent())
 		Sleep(1000);
 #endif
