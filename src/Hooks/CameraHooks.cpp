@@ -44,7 +44,7 @@ namespace AutoMove
 			static REL::Relocation<uintptr_t> DragonCameraState_UpdRotation{ RELOCATION_ID(32371, 33120) };
 
 			auto& tramp = SKSE::GetTrampoline();
-			oActorGetSomeState = tramp.write_call<5>(DragonCameraState_UpdRotation.address() + 146, ActorGetSomeStateHook);
+			oActorGetSomeState = tramp.write_call<5>(DragonCameraState_UpdRotation.address() + REL::Relocate(146, 147), ActorGetSomeStateHook);
 		}
 
 		void InstallHorseCameraState_UpdRotationHook()
