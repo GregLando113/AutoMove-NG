@@ -8,7 +8,7 @@
 #include "Serialization.h"
 #include "Hooks/Hooks.h"
 
-#define WAIT_DEBUGGER 1
+#define WAIT_DEBUGGER 0
 
 #if WAIT_DEBUGGER
 #include <Windows.h>
