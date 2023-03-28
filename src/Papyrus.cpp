@@ -65,6 +65,7 @@ namespace AutoMove
 			onPlayerDialogue->Unregister(script);
 		}
 
+		// Using the RE'd GetMount new to NG
 		RE::Actor* GetCurrentMount(RE::StaticFunctionTag*, RE::Actor* a)
 		{
 			RE::ActorPtr mount_ptr;
@@ -73,11 +74,23 @@ namespace AutoMove
 			return mount_ptr.get();
 		}
 
+
+		// A faithful recreation of the original AutoMove version of GetCurrentMount.
+		RE::Actor* GetCurrentMount_RE(RE::StaticFunctionTag*, RE::Actor* a)
+		{
+			RE::ExtraInteraction* extdata = a->extraList.GetByType<RE::ExtraInteraction>();
+			RE::NiPointer<RE::TESObjectREFR> handleptr;
+			RE::LookupReferenceByHandle(extdata->interaction->actor.native_handle(), handleptr);
+			if (!handleptr)
+				return nullptr;
+			return handleptr->As<RE::Actor>();
+		}
+
 		bool RegisterFuncs(RE::BSScript::IVirtualMachine* a_vm)
 		{
 			a_vm->RegisterFunction("ForceDestinationMarkerIntoAliasID", "AutoMove", ForceDestinationMarkerIntoAliasID);
 			a_vm->RegisterFunction("IsCustomDestinationActive", "AutoMove", IsCustomDestinationActive);
-			a_vm->RegisterFunction("GetCurrentMount", "AutoMove", GetCurrentMount);
+			a_vm->RegisterFunction("GetCurrentMount", "AutoMove", GetCurrentMount_RE);
 			a_vm->RegisterFunction("RegisterForCustomMarkerChange", "AutoMove", RegisterForCustomMarkerChange);
 			a_vm->RegisterFunction("UnregisterForCustomMarkerChange", "AutoMove", UnregisterForCustomMarkerChange);
 			a_vm->RegisterFunction("RegisterForPlayerDialogue", "AutoMove", RegisterForPlayerDialogue);
