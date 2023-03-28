@@ -1,12 +1,12 @@
 # Auto Move NG
 
- User Requires ![Original AutoMove Mod](https://www.nexusmods.com/skyrimspecialedition/mods/42845)
+ User Requires [Original AutoMove Mod](https://www.nexusmods.com/skyrimspecialedition/mods/42845)
  
  This dll was built from reverse engineering the original mod dll. No source code was given to me. This mod does not distribute anything that was not my work. You still require the script files and esp from the original mod for this dll to be at all useful.
  
  ## Install
  
-  - Install the ![Original AutoMove Mod](https://www.nexusmods.com/skyrimspecialedition/mods/42845)
+  - Install the [Original AutoMove Mod](https://www.nexusmods.com/skyrimspecialedition/mods/42845)
   - Install this mod, make sure this mod overwrites `AutoMove.dll`.
  
  
@@ -17,10 +17,15 @@
   - Visual Studio 2022
   - cmake
   - vcpkg
+  - A python 3 install for scripts
   
  ### Commands
  
  Set environment variable `AUTOMOVE_OUTPUT_ROOT` to where you want the mod to install to, either your skyrim data dir or your ModOrganizer mod folder for the project.
+ 
+ You might need to update the vcpkg baselines, so run `py scripts/update-baselines.py` before the build.
+ 
+ Build with:
  
  ```
  cmake --preset vs2022-windows
