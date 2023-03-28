@@ -78,7 +78,6 @@ namespace AutoMove
 		// A faithful recreation of the original AutoMove version of GetCurrentMount.
 		RE::Actor* GetCurrentMount_Original(RE::StaticFunctionTag*, RE::Actor* a)
 		{
-			a->IsOnMount();
 			RE::ExtraInteraction* extdata = a->extraList.GetByType<RE::ExtraInteraction>();
 			RE::NiPointer<RE::TESObjectREFR> handleptr;
 			RE::LookupReferenceByHandle(extdata->interaction->actor.native_handle(), handleptr);
