@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "Serialization.h"
-#include "Papyrus.h"
+#include "Events/Events.h"
 
 
 namespace AutoMove
@@ -14,8 +14,8 @@ namespace AutoMove
 
 	void OnGameSave(SKSE::SerializationInterface* a_inf)
 	{
-		Papyrus::GetOnCustomMarkerChangeEvent()->Save(a_inf, kOnMarkerChange, kSerializationVersion);
-		Papyrus::GetOnPlayerDialogueEvent()->Save(a_inf, kOnDialogue, kSerializationVersion);
+		Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Save(a_inf);
+		Events::HKSetDialogueWithPlayer::GetEvent()->Save(a_inf);
 	}
 
 	void OnGameLoad(SKSE::SerializationInterface* a_inf)
@@ -33,12 +33,12 @@ namespace AutoMove
 
 			switch (type) {
 			case kOnMarkerChange:
-				Papyrus::GetOnCustomMarkerChangeEvent()->Clear();
-				Papyrus::GetOnCustomMarkerChangeEvent()->Load(a_inf);
+				Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Clear();
+				Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Load(a_inf);
 				break;
 			case kOnDialogue:
-				Papyrus::GetOnPlayerDialogueEvent()->Clear();
-				Papyrus::GetOnPlayerDialogueEvent()->Load(a_inf);
+				Events::HKSetDialogueWithPlayer::GetEvent()->Clear();
+				Events::HKSetDialogueWithPlayer::GetEvent()->Load(a_inf);
 				break;
 			}
 		}
@@ -47,7 +47,7 @@ namespace AutoMove
 
 	void OnGameRevert(SKSE::SerializationInterface* a_inf)
 	{
-		Papyrus::GetOnCustomMarkerChangeEvent()->Revert(a_inf);
-		Papyrus::GetOnPlayerDialogueEvent()->Revert(a_inf);
+		Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Revert(a_inf);
+		Events::HKSetDialogueWithPlayer::GetEvent()->Revert(a_inf);
 	}
 }

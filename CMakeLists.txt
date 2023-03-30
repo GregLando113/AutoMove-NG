@@ -15,17 +15,23 @@ set(SOURCES
          src/Papyrus.cpp
          src/PCH.cpp
          src/Serialization.cpp
+         src/Events/Events.cpp
+         src/Events/OnCustomDestinationArrived.cpp
+         src/Events/OnMarkerChange.cpp
+         src/Events/OnPlayerDialogue.cpp
          src/Hooks/AutoMoveHook.cpp
          src/Hooks/CameraHooks.cpp
          src/Hooks/Hooks.cpp
-         src/Hooks/OnMarkerChangeHook.cpp
-         src/Hooks/OnPlayerDialogueHook.cpp
 )
 set(HEADERS
          src/CustomDestination.h
          src/Papyrus.h
          src/PCH.h
          src/Serialization.h
+         src/Events/Events.h
+         src/Events/OnCustomDestinationArrived.h
+         src/Events/OnMarkerChange.h
+         src/Events/OnPlayerDialogue.h
          src/Hooks/Hooks.h
 )
 

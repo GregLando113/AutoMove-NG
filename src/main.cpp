@@ -7,6 +7,7 @@
 #include "Papyrus.h"
 #include "Serialization.h"
 #include "Hooks/Hooks.h"
+#include "Events/Events.h"
 
 #define WAIT_DEBUGGER 0
 
@@ -31,6 +32,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 		s->SetLoadCallback(AutoMove::OnGameLoad);
 		s->SetRevertCallback(AutoMove::OnGameRevert);
 	}
+	AutoMove::Events::InstallHooks();
 	AutoMove::Hooks::Install();
 	return true;
 }
