@@ -14,8 +14,8 @@ namespace AutoMove
 
 	void OnGameSave(SKSE::SerializationInterface* a_inf)
 	{
-		Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Save(a_inf);
-		Events::HKSetDialogueWithPlayer::GetEvent()->Save(a_inf);
+		Events::HKPlacePlayerMarkerCallbackFunctor::GetEvent()->Save(a_inf, kOnMarkerChange, kSerializationVersion);
+		Events::HKSetDialogueWithPlayer::GetEvent()->Save(a_inf, kOnDialogue, kSerializationVersion);
 	}
 
 	void OnGameLoad(SKSE::SerializationInterface* a_inf)
