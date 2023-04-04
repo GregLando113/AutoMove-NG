@@ -9,6 +9,9 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 include(GNUInstallDirs)
 find_package(CommonLibSSE CONFIG REQUIRED)
 
+# Do not delete the below begin and end statements.
+# They are used by the globber py script for replacement
+### BEGIN SOURCE FILES ###
 set(SOURCES
          src/CustomDestination.cpp
          src/main.cpp
@@ -34,8 +37,9 @@ set(HEADERS
          src/Events/OnPlayerDialogue.h
          src/Hooks/Hooks.h
 )
+### END SOURCE FILES ###
 
-add_commonlibsse_plugin(AutoMove
+add_commonlibsse_plugin(${PROJECT_NAME}
     # The plugin's name, defaults to target.
     NAME "AutoMove NG"
 
@@ -59,7 +63,7 @@ add_commonlibsse_plugin(AutoMove
 )
 
 target_compile_features(
-    AutoMove
+    ${PROJECT_NAME}
     PUBLIC
         cxx_std_23
 )
@@ -71,7 +75,7 @@ target_precompile_headers(
 )
 
 target_compile_definitions(
-    AutoMove
+    ${PROJECT_NAME}
     PUBLIC
         WINVER=0x0601	# windows 7, minimum supported version by skyrim special edition
         _WIN32_WINNT=0x0601
@@ -83,11 +87,10 @@ target_compile_definitions(
 )
 
 add_custom_command(
-    TARGET AutoMove
+    TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "$ENV{AUTOMOVE_OUTPUT_ROOT}/SKSE/Plugins/"
 )
 
-find_package(PythonInterp)
 find_package(Python)
-install(CODE "execute_process(COMMAND \"${PYTHON_EXECUTABLE}\" \"${CMAKE_CURRENT_SOURCE_DIR}/scripts/mkrelease.py\" -v ${PROJECT_VERSION} -f \"$<TARGET_FILE:${PROJECT_NAME}>\")")
+install(CODE "execute_process(COMMAND \"${_Python_EXECUTABLE}\" \"${CMAKE_CURRENT_SOURCE_DIR}/scripts/mkrelease.py\" -v ${PROJECT_VERSION} -n \"${PROJECT_NAME}\" -f \"$<TARGET_FILE:${PROJECT_NAME}>\")")
