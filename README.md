@@ -15,15 +15,16 @@
  ### Requirements
  
   - Visual Studio 2022
+  - Mod Organizer 2 as your mod manager
   - cmake
   - vcpkg
   - A python 3 install for scripts
   
  ### Commands
  
- Set environment variable `AUTOMOVE_OUTPUT_ROOT` to where you want the mod to install to, either your skyrim data dir or your ModOrganizer mod folder for the project.
+ Set environment variable `MO_SSE_INSTANCE` to the folder path of your Skyrim Special Edition Mod Organizer instance. You will see mods, profiles, overwrite etc in the folder if its the right one. It will expect a mod with the same name as `PROJECT_PLUGIN_NAME` (in this case, "AutoMove NG") in mod organizer to copy fresh binary builds into. Ensure this mod along with the SKSE/Plugins folder is created.
  
- You might need to update the vcpkg baselines, so run `py scripts/update-baselines.py` before the build.
+ You might need to update the vcpkg baselines, so run `py scripts/update-baselines.py` before the build if you encounter issues.
  
  Build with:
  
@@ -31,3 +32,5 @@
  cmake --preset vs2022-windows
  cmake --build build --config (Debug|Release)
  ```
+
+ If you want to release a build on nexus or something, run `cmake --install build` which will run `scripts/mkrelease.py` to auto zip a build installable by ModOrganizer or vortex.
