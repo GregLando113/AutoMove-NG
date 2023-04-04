@@ -1,13 +1,19 @@
 cmake_minimum_required(VERSION 3.18)
 
+
 project(AutoMove VERSION 0.3.0.0 LANGUAGES CXX)
+set(PROJECT_PLUGIN_NAME "AutoMove NG")
+
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
-
 include(GNUInstallDirs)
 find_package(CommonLibSSE CONFIG REQUIRED)
+
+
+
 
 # Do not delete the below begin and end statements.
 # They are used by the globber py script for replacement
@@ -42,10 +48,10 @@ set(HEADERS
 
 add_commonlibsse_plugin(${PROJECT_NAME}
     # The plugin's name, defaults to target.
-    NAME "AutoMove NG"
+    NAME "${PROJECT_PLUGIN_NAME}"
 
     # The plugin's author, empty by default.
-    AUTHOR "xILARTH"
+    AUTHOR "KAOS (a.k.a. xILARTH)"
 
     # The support email address, empty by default.
     EMAIL "kaos4d1@gmail.com"
@@ -90,8 +96,8 @@ target_compile_definitions(
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "$ENV{AUTOMOVE_OUTPUT_ROOT}/SKSE/Plugins/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "$ENV{MO_SSE_INSTANCE}/mods/${PROJECT_PLUGIN_NAME}/SKSE/Plugins/"
 )
 
 find_package(Python)
-install(CODE "execute_process(COMMAND \"${_Python_EXECUTABLE}\" \"${CMAKE_CURRENT_SOURCE_DIR}/scripts/mkrelease.py\" -v ${PROJECT_VERSION} -n \"${PROJECT_NAME}\" -f \"$<TARGET_FILE:${PROJECT_NAME}>\")")
+install(CODE "execute_process(COMMAND \"${_Python_EXECUTABLE}\" \"${CMAKE_CURRENT_SOURCE_DIR}/scripts/mkrelease.py\" -v ${PROJECT_VERSION} -n \"${PROJECT_PLUGIN_NAME}\" -f \"$<TARGET_FILE:${PROJECT_NAME}>\" -o \"${PROJECT_NAME}\")")
