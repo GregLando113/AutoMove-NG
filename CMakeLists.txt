@@ -13,29 +13,30 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 # They are used by the globber py script for replacement
 ### BEGIN SOURCE FILES ###
 set(SOURCES
-         src/CustomDestination.cpp
-         src/main.cpp
-         src/Papyrus.cpp
-         src/PCH.cpp
-         src/Serialization.cpp
-         src/Events/Events.cpp
-         src/Events/OnCustomDestinationArrived.cpp
-         src/Events/OnMarkerChange.cpp
-         src/Events/OnPlayerDialogue.cpp
-         src/Hooks/AutoMoveHook.cpp
-         src/Hooks/CameraHooks.cpp
-         src/Hooks/Hooks.cpp
+	src/CustomDestination.cpp
+	src/main.cpp
+	src/Papyrus.cpp
+	src/PCH.cpp
+	src/Serialization.cpp
+	src/Events/Events.cpp
+	src/Events/OnCustomDestinationArrived.cpp
+	src/Events/OnMarkerChange.cpp
+	src/Events/OnPlayerDialogue.cpp
+	src/Hooks/AutoMoveHook.cpp
+	src/Hooks/CameraHooks.cpp
+	src/Hooks/Hooks.cpp
 )
+
 set(HEADERS
-         src/CustomDestination.h
-         src/Papyrus.h
-         src/PCH.h
-         src/Serialization.h
-         src/Events/Events.h
-         src/Events/OnCustomDestinationArrived.h
-         src/Events/OnMarkerChange.h
-         src/Events/OnPlayerDialogue.h
-         src/Hooks/Hooks.h
+	src/CustomDestination.h
+	src/Papyrus.h
+	src/PCH.h
+	src/Serialization.h
+	src/Events/Events.h
+	src/Events/OnCustomDestinationArrived.h
+	src/Events/OnMarkerChange.h
+	src/Events/OnPlayerDialogue.h
+	src/Hooks/Hooks.h
 )
 ### END SOURCE FILES ###
 
